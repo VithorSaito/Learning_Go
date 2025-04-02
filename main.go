@@ -14,6 +14,10 @@ func main() {
 	e := echo.New()
 
 	e.GET("/", getStorage)
+
+	e.POST("/create", createItens)
+
+
 	e.Logger.Fatal(e.Start(":8000"))
 }
 
@@ -25,10 +29,24 @@ func incrementStorage() {
 	storage = append(storage, Storage{Name: "juice", Amount: 4})
 }
 
-
 func getStorage(c echo.Context) error {
 
 	incrementStorage()
 
 	return c.JSON(200, storage)
 }
+
+func createItens( c echo.Context) error {
+
+	itens := new(Storage)
+	if err := c.Bind(itens); err != nil {
+		return err
+	}
+
+	storage = append(storage, *itens)
+
+
+
+	return c.JSON(200, storage)
+}
+
