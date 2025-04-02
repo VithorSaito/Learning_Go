@@ -37,7 +37,12 @@ jobs:
         with:
           go-version: 1.24.1
 
-      - name: 🔨 Build da aplicação
+      - name: 📦 Instalar Netlify CLI
+        run: npm install -g netlify-cli
+
+      - name: 🔍 Verificar a versão do Netlify CLI
+        run: netlify --version
+
+      - name: 🚀 Fazer Deploy para Netlify
         run: |
-          go mod tidy
-          go build -o app
+          netlify deploy
