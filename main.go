@@ -13,10 +13,13 @@ func main() {
 
 	e := echo.New()
 
+	incrementStorage()
+
 	e.GET("/", getStorage)
 
 	e.POST("/create", createItens)
 
+	e.DELETE("/delete/:Name", deleteItens)
 
 	e.Logger.Fatal(e.Start(":8000"))
 }
@@ -31,8 +34,6 @@ func incrementStorage() {
 
 func getStorage(c echo.Context) error {
 
-	incrementStorage()
-
 	return c.JSON(200, storage)
 }
 
@@ -45,8 +46,18 @@ func createItens( c echo.Context) error {
 
 	storage = append(storage, *itens)
 
-
-
 	return c.JSON(200, storage)
 }
 
+func deleteItens (c echo.Context) error {
+
+	name := c.Param("Name")
+
+	for i, item := range storage {
+		if item.Name == name {
+			storage = append(storage[:i], storage[i+1:]...)
+			return c.JSON(200, map[string]string{"message": "Item excluído com sucesso"})
+		}
+	}
+	return c.JSON(200, map[string]string{})
+}
