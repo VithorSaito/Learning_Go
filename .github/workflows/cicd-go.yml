@@ -45,4 +45,6 @@ jobs:
 
       - name: 🚀 Fazer Deploy para Netlify
         run: |
-          netlify deploy
+          netlify deploy --prod \
+            --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
+            --site ${{ secrets.NETLIFY_SITE_ID }}
