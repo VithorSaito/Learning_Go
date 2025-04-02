@@ -36,15 +36,17 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: 1.24.1
+      - name: 🔨 Compilar a aplicação
+        run: go build -o myapp .
 
-      - name: 📦 Instalar Netlify CLI
-        run: npm install -g netlify-cli
+      - name: 🗂️ Criar pasta para empacotamento
+        run: mkdir package && mv myapp package/
 
-      - name: 🔍 Verificar a versão do Netlify CLI
-        run: netlify --version
+      - name: 📦 Compactar a aplicação
+        run: zip -r myapp.zip package/
 
-      - name: 🚀 Fazer Deploy para Netlify
-        run: |
-          netlify deploy --prod \
-            --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
-            --site ${{ secrets.NETLIFY_SITE_ID }}
+      - name: 📤 Fazer upload do .zip como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: myapp-zip
+          path: myapp.zip
