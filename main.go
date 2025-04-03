@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -21,7 +23,12 @@ func main() {
 
 	e.DELETE("/delete/:Name", deleteItens)
 
-	e.Logger.Fatal(e.Start(":8000"))
+	httpPort := os.Getenv("PORT")
+	if httpPort == "" {
+		httpPort = "3000"
+	}
+
+	e.Logger.Fatal(e.Start(":" + httpPort ))
 }
 
 var storage []Storage
