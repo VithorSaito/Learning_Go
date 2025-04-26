@@ -24,7 +24,10 @@ jobs:
         run: go build -v ./...
 
       - name: Test
-        run: go test -v ./...
+        run: |
+          echo "🧪 Running Go Tests..."
+          go test -v ./... || (echo "❌ Testes falharam! Corrija antes de fazer merge." && exit 1)
+
   deploy:
     runs-on: ubuntu-latest
 
